@@ -1,0 +1,94 @@
+---
+title: Developer Overview
+---
+
+# Developer Overview
+
+The RARLife CMS is built on top of **Laravel**, utilizing a custom dynamic schema system that allows page components to be configured and rendered without manually creating database columns or static templates for each new section.
+
+This architecture makes the CMS highly scalable and component-driven.
+
+---
+
+## 🧱 Tech Stack Details
+
+The system uses the following technologies:
+
+- **Framework:** Laravel 10+ (MVC Architecture)
+- **Frontend Styling:** Tailwind CSS (compiled via Vite)
+- **JavaScript:** jQuery + Vanilla JavaScript  
+  (used in `app.js` and Blade views)
+- **Build Tool:** Vite
+- **Database Layer:** Eloquent ORM + Dynamic Query System
+
+---
+
+## 🧩 Core Architecture Philosophy
+
+The CMS is designed around a **dynamic component system**, where:
+
+- Pages are containers
+- Components define sections
+- Fields define structure and content
+- Everything is stored dynamically in the database
+
+👉 This removes the need to create new tables or columns for every new section.
+
+---
+
+## 🗂️ Core Database Models
+
+### Page Model
+Handles website pages and their metadata.
+
+**Responsibilities:**
+- SEO (title, description, image)
+- Slugs / Permalinks
+- Page status (draft / publish)
+- Template selection
+- Layout settings (header, footer, breadcrumb)
+
+---
+
+### ComponentMaster
+Defines the **master registry of all components (sections)**.
+
+**Responsibilities:**
+- Stores component structure definition
+- Defines whether component is:
+  - Static (fixed structure)
+  - Dynamic (database-driven)
+- Controls relationships and usage rules
+- Tracks source type (`set_from`: database or custom fields)
+
+---
+
+### ComponentField
+Stores all **dynamic schema data and user content**.
+
+**Responsibilities:**
+- Field types (text, image, repeater, etc.)
+- Component configuration values
+- Page-specific content overrides
+- Positioning and ordering
+- Dynamic field schema mapping
+
+---
+
+### General Model
+Handles **global system configuration**.
+
+**Responsibilities:**
+- Website settings
+- Header & footer scripts
+- Analytics (Google Analytics, etc.)
+- Cookie banner configuration
+- Global SEO and meta configurations
+
+---
+
+## 🔄 Component Rendering Flow
+
+The rendering system works as follows:
+
+1. Developer creates a Blade component:

@@ -1,0 +1,49 @@
+{
+  "name": "CMS User Guide",
+  "theme": "mint",
+  "colors": {
+    "primary": "#4F46E5"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "introduction",
+          "getting-started/login",
+          "getting-started/dashboard-overview"
+        ]
+      },
+      {
+        "group": "User Guide",
+        "pages": [
+          "user/pages-system",
+          "user/component",
+          "user/notifications"
+        ]
+      },
+      {
+        "group": "User-Settings",
+        "pages": [
+          "user/settings/website-settings",
+          "user/settings/header-settings",
+          "user/settings/font-settings",
+          "user/settings/manage-navigation",
+          "user/settings/clear-cache"
+        ]
+      },
+      {
+        "group": "Developer Guide",
+        "pages": [
+          "developer/overview",
+          "developer/sections-manager",
+          "developer/blade-components",
+          "developer/component-architecture",
+          "developer/dynamic-fields",
+          "developer/routing-system",
+          "developer/frontend-integration"
+        ]
+      }
+    ]
+  }
+}

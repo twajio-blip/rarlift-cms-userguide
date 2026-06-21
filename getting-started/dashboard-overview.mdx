@@ -1,0 +1,240 @@
+---
+title: Dashboard Overview
+---
+
+# Dashboard
+
+The RARLift CMS dashboard is the central control panel for managing the RARLife website.
+
+It provides a real-time overview of content activity, user interactions, and system status in a modern SaaS-style interface.
+
+---
+
+# 👤 User Panel (CMS Operator)
+
+This section is for users who manage the website content through the CMS.
+
+---
+
+## 📊 Stat Cards
+
+At the top of the dashboard, users can view key metrics:
+
+- Blog Posts → Total published blogs  
+- Website Visitors → Total site visits  
+- Subscribers → Total email subscribers  
+- Contact → Total contact inquiries  
+
+These cards provide a quick summary of website activity.
+
+---
+
+## 🖥️ Dashboard Interface
+
+> Main dashboard showing stats, navigation, and analytics.
+
+![Dashboard Overview](/images/dashboard.png)
+
+---
+
+## 📈 Website Visitor Trends
+
+Users can view a line chart showing website traffic trends over time.
+
+This helps monitor:
+
+- Visitor growth  
+- Traffic performance  
+- Engagement patterns  
+
+---
+
+## 🧭 Sidebar Navigation (User Access)
+
+Users can access CMS modules through the sidebar:
+
+### Core
+- Search Panel
+- Dashboard
+- Pages
+- Components
+
+### Administration
+- Notifications (Inquiries, Subscribers)
+
+### Sections
+- Manage Sections
+
+### Settings
+- Website Settings  
+- Header Settings  
+- Font Settings  
+- Manage Navigation  
+- SMTP Setup  
+- Clear Cache  
+
+---
+
+## 🔍 Global Search
+
+Users can search across the CMS to quickly find:
+
+- Pages  
+- Components  
+- Settings  
+
+---
+
+## 🔔 Notifications System
+
+Users receive notifications when:
+
+- A new contact inquiry is submitted  
+- A new subscriber is added  
+
+Notifications are shown with a badge counter and listed inside the Notifications panel.
+
+---
+
+## 🔔 Notifications Preview
+
+> Notification panel showing system alerts.
+
+![Notifications](/images/notifications.png)
+
+---
+
+## 📬 Activity & Widgets
+
+Users can view:
+
+- Recent contact submissions  
+- Subscriber activity  
+- System updates  
+
+This helps monitor real-time engagement.
+
+---
+
+# 🧑‍💻 Developer Panel (System Understanding)
+
+This section is for developers responsible for building and maintaining the CMS structure.
+
+---
+
+## 🧩 Dashboard Architecture
+
+The dashboard is built using a modular Laravel architecture:
+
+- Controllers handle data processing  
+- Blade views render UI components  
+- Services manage business logic and analytics  
+
+---
+
+## 📊 Data Sources
+
+Each dashboard metric is dynamically generated from the database:
+
+- Blog Posts → Posts table count  
+- Website Visitors → Analytics tracking system  
+- Subscribers → Newsletter subscribers table  
+- Contact → Contact inquiries table  
+
+---
+
+## 📈 Chart System
+
+The visitor analytics chart is powered by:
+
+- Time-based database queries  
+- Backend aggregation logic  
+- Frontend chart rendering (JS-based visualization)  
+
+---
+
+## 🔔 Notification Engine
+
+Notifications are generated from backend events such as:
+
+- New contact form submissions  
+- New subscriber registrations  
+
+These are stored in the database and displayed in the admin interface with real-time badge updates.
+
+---
+
+## 🧭 Sidebar Structure
+
+Sidebar menus are dynamically registered based on CMS route configuration:
+
+- Core CMS modules  
+- Administration tools  
+- Settings modules  
+
+---
+
+## 🧩 Sections (Manage Section System)
+
+The **Sections (Manage Section)** feature is a developer-level system.
+
+This is where developers define and register reusable frontend components.
+
+### How it works:
+
+1. Developer creates a Blade component inside:
+
+```
+resources/views/components/frontend/
+```
+
+2. Each file represents a **section/component** (e.g. hero, about, services)
+
+3. The CMS automatically detects or registers this component as a reusable section
+
+4. This section becomes available inside the CMS for Users to:
+
+   - Add to pages  
+   - Configure content  
+   - Reorder or remove  
+
+---
+
+### Example Structure:
+
+```
+resources/views/components/frontend/hero.blade.php
+resources/views/components/frontend/about.blade.php
+resources/views/components/frontend/services.blade.php
+```
+
+---
+
+### Developer Responsibility:
+
+- Create and structure Blade components  
+- Define how sections render on frontend  
+- Ensure components accept dynamic CMS data  
+- Maintain consistent layout and design system  
+
+---
+
+### User Interaction:
+
+Once created by the developer:
+
+- Users can see the section in “Manage Sections”  
+- Users can assign sections to pages  
+- Users can configure content without touching code  
+
+---
+
+## 🚀 Summary
+
+The developer layer controls the system architecture:
+
+- Builds Blade components (sections)  
+- Connects them to CMS system  
+- Defines how data is rendered on frontend  
+
+The CMS then allows users to manage these sections visually without code access.

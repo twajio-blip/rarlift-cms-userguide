@@ -1,0 +1,116 @@
+---
+title: Introduction
+---
+
+# DATADSS CMS Overview
+
+DATADSS CMS is a Laravel-based, component-driven content management system designed to manage the RARLife business website without requiring any coding knowledge.
+
+It enables structured website building using reusable components, allowing full control over pages, sections, and content through a visual CMS interface.
+
+---
+
+## Purpose of the CMS
+
+The CMS is designed for managing the official RARLife business website, which includes company information, products (lifts), branding, galleries, and promotional content.
+
+The system ensures that all content can be updated dynamically while maintaining a consistent design structure.
+
+---
+
+## System Roles
+
+The CMS is divided into three main roles:
+
+---
+
+### User (Content Manager)
+
+The User manages website content through the CMS interface.
+
+Capabilities:
+
+- Create and manage pages  
+- Add components (sections) to pages  
+- Edit content (text, images, banners, etc.)  
+- Manage component order inside pages  
+- View notifications (contact inquiries, subscribers)  
+- Publish or update website content  
+
+---
+
+### Developer (System Builder)
+
+The Developer builds the CMS structure and frontend system.
+
+Responsibilities:
+
+- Create reusable components using Blade templates  
+- Connect frontend components to backend CMS  
+- Define component fields and data structure  
+- Manage routes and page rendering logic  
+- Ensure components work dynamically with CMS data  
+
+How it works:
+
+- Developer creates a Blade component (section)  
+- CMS registers it as a reusable component  
+- User uses the component in pages  
+- Content is injected dynamically into the frontend  
+
+---
+
+### Viewer (Public User)
+
+The Viewer is the end user of the website.
+
+Capabilities:
+
+- View live website content  
+- Browse pages and sections  
+- No access to CMS or admin panel  
+
+---
+
+## System Workflow
+
+The CMS follows a component-based architecture:
+
+1. Developer creates components (Blade sections)  
+2. CMS registers them as reusable blocks  
+3. User adds components to pages  
+4. User configures content and order  
+5. Viewer sees the final website  
+
+---
+
+## System Architecture
+
+The CMS connects Developer → User → Viewer in a structured content pipeline.
+
+![CMS Architecture](/images/cms-architecture.png)
+
+---
+
+## Flexibility of the System
+
+The CMS follows a hybrid structure:
+
+- Pages are built using components  
+- Each component is reusable  
+- Content is editable per page  
+- Sections can be added, removed, or reordered freely  
+
+This ensures both design consistency and content flexibility.
+
+---
+
+## Summary
+
+DATADSS CMS allows full control over the RARLife website through a structured system where:
+
+- Developers build components  
+- Users manage content  
+- Viewers access the live website  
+
+This separation ensures scalability, maintainability, and ease of use for non-technical users.

@@ -1,0 +1,142 @@
+---
+title: Component
+---
+
+# Component Content Management
+
+The Component system is the core building block of the CMS. It allows users to manage all website sections without writing code.
+
+A **component represents a reusable website section** such as a hero section, FAQ, gallery, or service block.
+
+---
+
+## What is a Component?
+
+A component is a frontend section created by the developer using a Blade file.
+
+Developers define components inside:
+
+resources/views/components/frontend/
+
+
+Each file becomes a reusable section inside the CMS.
+
+Example:
+
+- hero.blade.php → Hero Section  
+- faq.blade.php → FAQ Section  
+- services.blade.php → Services Section  
+
+Once created, the component automatically becomes available in the CMS.
+
+---
+
+## How Components Work
+
+The CMS follows this workflow:
+
+1. Developer creates a Blade component (section)
+2. CMS registers it as a reusable component
+3. User adds the component to a page
+4. User edits the component content
+5. Changes are reflected on the live website
+
+---
+
+## Component Features
+
+Each component can include:
+
+- Text fields
+- Images
+- Buttons
+- Lists
+- Repeatable items (FAQ, sliders, cards)
+
+Some components are single-block, while others support multiple dynamic items.
+
+---
+
+## Global vs Page-Specific Content
+
+Components support two types of content behavior:
+
+### Global Content
+- Shared across all pages
+- Editing affects every page where the component is used
+
+### Page-Specific Content
+- Unique content per page
+- Same component can display different data on different pages
+
+---
+
+## Component Reusability
+
+A single component can be used across multiple pages.
+
+Examples:
+
+- Hero Section → Homepage, About Page, Services Page  
+- FAQ Section → Help Page, Contact Page  
+- Services Section → Multiple landing pages  
+
+Each usage can have its own content.
+
+---
+
+## Adding Components to Pages
+
+Users add components using the **Add UI Block (Component Panel)**.
+
+Steps:
+
+1. Open a page (Create or Edit mode)
+2. Click **Add UI Block**
+3. Select a component
+4. Add it to the page
+5. Configure its content
+6. Save changes
+
+---
+
+## Component Panel
+
+![Component Panel](/images/add-ui-block.png)
+
+---
+
+## Editing Component Content
+
+Users can update component content anytime:
+
+- Update text
+- Upload images
+- Modify lists or items
+- Adjust component data
+
+All changes are reflected instantly on the website.
+
+---
+
+## Developer Role
+
+Developers are responsible for:
+
+- Creating Blade components
+- Defining component structure
+- Handling frontend rendering logic
+- Connecting CMS data to components
+
+Without a Blade file, a component does not exist in the CMS.
+
+---
+
+## Summary
+
+The Component system makes the CMS fully dynamic.
+
+- Developers create components (Blade files)
+- CMS registers them automatically
+- Users reuse and manage them across pages
+- Content updates happen without code changes
