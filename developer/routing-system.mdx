@@ -1,0 +1,343 @@
+---
+
+## title: Routing System
+
+# Routing System
+
+The RARLife CMS uses a **dynamic database-driven routing system** that eliminates the need to manually create Laravel routes for every page.
+
+Instead of defining routes individually inside `web.php`, page URLs are automatically generated from the page records stored in the database.
+
+This allows users to create new pages from the CMS and immediately access them without developer intervention.
+
+---
+
+## Routing Architecture Overview
+
+Unlike traditional Laravel applications where routes are manually registered, RARLife generates frontend routes dynamically.
+
+The system reads all active page permalinks from the database and registers them automatically during application boot.
+
+### Benefits
+
+* No manual route creation required
+* New CMS pages work automatically
+* Fully dynamic URL management
+* User-created pages become instantly accessible
+
+---
+
+## Dynamic Route Registration
+
+When Laravel loads the application's routes, the CMS first checks whether the `pages` table and `permalink` column exist.
+
+### Route Initialization Logic
+
+```php
+if (Schema::hasColumn('pages', 'permalink')) {
+    $page = Page::pluck('permalink');
+} else {
+    $page = [];
+}
+```
+
+The system then loops through every permalink and registers a frontend route.
+
+```php
+foreach ($page as $url) {
+    Route::get($url, [PageController::class, 'index']);
+}
+```
+
+---
+
+## Example Route Generation
+
+Suppose the database contains the following pages:
+
+| Page     | Permalink |
+| -------- | --------- |
+| About Us | about-us  |
+| Services | services  |
+| Contact  | contact   |
+
+The CMS automatically generates:
+
+```php
+Route::get('about-us', [PageController::class, 'index']);
+Route::get('services', [PageController::class, 'index']);
+Route::get('contact', [PageController::class, 'index']);
+```
+
+No additional route definitions are required.
+
+---
+
+## Default Route Fallback
+
+During a fresh installation, there may be no pages available in the database.
+
+In that case, the CMS loads a default landing page.
+
+```php
+if (count($page) == 0) {
+    Route::get('/', [PageController::class, 'defaultPage']);
+}
+```
+
+This ensures the application remains accessible even before pages are created.
+
+---
+
+## Request Lifecycle
+
+When a visitor opens a page, Laravel follows the dynamic routing flow.
+
+### Request Flow
+
+```text
+User Visits URL
+        ↓
+Laravel Router
+        ↓
+Dynamic Route Match
+        ↓
+PageController@index
+        ↓
+Load Page & Components
+        ↓
+Format Component Data
+        ↓
+Render Blade Components
+        ↓
+Return HTML Response
+```
+
+---
+
+## Route Resolution Process
+
+### Step 1: User Visits a URL
+
+Example:
+
+```text
+https://example.com/about-us
+```
+
+Laravel checks the dynamically registered routes.
+
+Since `about-us` exists in the database, the route is matched and execution is passed to:
+
+```php
+PageController@index
+```
+
+---
+
+### Step 2: Locate the Page
+
+The controller identifies the current permalink using:
+
+```php
+request()->path()
+```
+
+The page is then loaded from the database.
+
+```php
+$page = Page::where('permalink', request()->path())
+    ->where('status', 1)
+    ->with(['component', 'pageStatus'])
+    ->first();
+```
+
+---
+
+### Loaded Relationships
+
+The controller automatically loads:
+
+#### Components
+
+All sections assigned to the page.
+
+Examples:
+
+* Hero Section
+* About Section
+* Services Section
+* Gallery Section
+
+#### Page Status
+
+Page-specific component settings such as:
+
+* Display limits
+* Status flags
+* Custom configuration values
+
+---
+
+## Component Data Processing
+
+After loading the page, the CMS processes all component fields.
+
+The controller converts raw database records into structured component data using internal helper methods.
+
+Examples:
+
+```text
+buildGroupWiseComponentData()
+```
+
+```text
+toFrontendComponentFormat()
+```
+
+These methods prepare the data before sending it to the frontend.
+
+---
+
+## Frontend Rendering
+
+After processing the component data, the CMS loads:
+
+```text
+resources/views/pages.blade.php
+```
+
+This acts as the master frontend renderer.
+
+The template loops through every component attached to the page.
+
+```blade
+@foreach ($components as $key => $component)
+    @component('components.frontend.' . $key, ['data' => $component])
+    @endcomponent
+@endforeach
+```
+
+---
+
+## Automatic Component Loading
+
+The component name determines which Blade file is loaded.
+
+Example:
+
+```text
+Component Name:
+hero_section
+```
+
+Automatically loads:
+
+```text
+resources/views/components/frontend/hero_section.blade.php
+```
+
+This allows developers to add new sections without modifying routing logic.
+
+---
+
+## Full Rendering Pipeline
+
+```text
+Browser Request
+        ↓
+Dynamic Route Match
+        ↓
+PageController@index
+        ↓
+Page Query
+        ↓
+Load Components
+        ↓
+Process Component Fields
+        ↓
+pages.blade.php
+        ↓
+Frontend Blade Components
+        ↓
+Rendered HTML
+```
+
+---
+
+## Route Cache Warning
+
+### Important
+
+The CMS relies on database-driven route registration.
+
+Because routes are generated dynamically, Laravel's route caching system should be used carefully.
+
+### Problem
+
+Running:
+
+```bash
+php artisan route:cache
+```
+
+creates a static route file.
+
+Any pages created later through the CMS will not exist inside the cached routes.
+
+Result:
+
+```text
+New pages return 404 errors
+```
+
+until the route cache is cleared.
+
+---
+
+## Recommended Solution
+
+After creating pages or modifying routing-related configurations, clear the application caches.
+
+The CMS provides a backend optimization tool that executes:
+
+```php
+Artisan::call('optimize:clear');
+```
+
+This clears:
+
+* Route Cache
+* Config Cache
+* View Cache
+* Application Cache
+
+and ensures newly created pages are accessible.
+
+---
+
+## Developer Responsibilities
+
+Developers should:
+
+* Maintain dynamic routing logic
+* Ensure permalink uniqueness
+* Create matching Blade components
+* Avoid unnecessary route caching
+* Clear caches after major structural changes
+
+---
+
+## Summary
+
+The RARLife CMS uses a fully dynamic routing architecture where page URLs are generated directly from database records.
+
+When users create a page:
+
+1. A permalink is stored in the database.
+2. Laravel automatically registers a route.
+3. The route resolves through `PageController`.
+4. Components are loaded and processed.
+5. Matching Blade templates render the final page.
+
+This approach allows unlimited page creation without manually editing route files.

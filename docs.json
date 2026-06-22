@@ -37,8 +37,6 @@
         "pages": [
           "developer/overview",
           "developer/sections-manager",
-          "developer/blade-components",
-          "developer/component-architecture",
           "developer/dynamic-fields",
           "developer/routing-system",
           "developer/frontend-integration"

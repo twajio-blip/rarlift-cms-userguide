@@ -1,0 +1,348 @@
+---
+
+## title: Dynamic Fields
+
+# Dynamic Fields
+
+The Dynamic Fields system allows developers to create flexible, database-driven content structures without modifying database tables for every new content type.
+
+Instead of creating dedicated columns for each section, field definitions are stored in the `component_fields` table and rendered dynamically by the CMS.
+
+This architecture enables developers to create reusable sections, repeatable content blocks, and custom data structures directly from the CMS.
+
+---
+
+## How Dynamic Fields Work
+
+Each field is stored as a database record and contains metadata that controls:
+
+* Input type
+* Layout width
+* Validation rules
+* Table visibility
+* Repeater behavior
+* User guidance
+
+When a user opens a component inside the CMS, the system reads these field definitions and automatically generates the form interface.
+
+### Dynamic Field Flow
+
+```text
+Developer Creates Field
+            ↓
+Field Stored in component_fields
+            ↓
+CMS Generates Form Automatically
+            ↓
+User Enters Content
+            ↓
+Data Saved to Database
+            ↓
+Frontend Component Renders Content
+```
+
+---
+
+## Field Properties
+
+### colspan
+
+**Purpose:** Controls the width of a field inside the backend form layout.
+
+The CMS uses a 12-column grid system powered by Tailwind CSS.
+
+Values range from:
+
+```text
+1 - 12
+```
+
+Examples:
+
+| Colspan | Result          |
+| ------- | --------------- |
+| 12      | Full Width      |
+| 6       | Half Width      |
+| 4       | One Third Width |
+| 3       | Quarter Width   |
+
+### Example Layout
+
+```text
+[ Title                ] colspan 12
+
+[ First Name ] [ Last Name ]
+     6               6
+
+[ City ] [ State ] [ Zip ]
+   4         4        4
+```
+
+---
+
+### show_in_table
+
+**Purpose:** Controls whether the field appears in component listing tables.
+
+When enabled:
+
+```text
+show_in_table = 1
+```
+
+The field becomes a column in the CMS listing view.
+
+When disabled:
+
+```text
+show_in_table = 0
+```
+
+The field remains editable but is hidden from tables.
+
+### Example
+
+```text
+Service Name      ✓ Visible
+Featured Image    ✗ Hidden
+Description       ✗ Hidden
+Status            ✓ Visible
+```
+
+---
+
+### is_required
+
+**Purpose:** Enforces mandatory field validation.
+
+When enabled:
+
+```text
+is_required = 1
+```
+
+The field:
+
+* Displays a required indicator
+* Uses HTML validation
+* Uses server-side validation
+* Prevents form submission when empty
+
+### Example
+
+```text
+Page Title      Required
+Description     Optional
+Banner Image    Required
+```
+
+---
+
+## Repeater System
+
+The CMS supports complex repeatable content structures using:
+
+* `schema_group`
+* `schema_instance`
+
+These properties allow developers to create repeaters without writing additional code.
+
+---
+
+### schema_group
+
+Defines a logical group of related fields.
+
+Example:
+
+```text
+Team Member
+ ├─ Name
+ ├─ Position
+ └─ Photo
+```
+
+All fields belong to the same schema group.
+
+---
+
+### schema_instance
+
+Represents an individual entry inside a schema group.
+
+Example:
+
+```text
+Team Member #1
+Team Member #2
+Team Member #3
+```
+
+Each entry receives its own schema instance.
+
+---
+
+### Repeater Example
+
+A Services section may contain:
+
+```text
+Service Item
+ ├─ Icon
+ ├─ Title
+ └─ Description
+```
+
+When the user clicks:
+
+```text
+Add More
+```
+
+A new schema instance is automatically created.
+
+Result:
+
+```text
+Service 1
+Service 2
+Service 3
+Service 4
+```
+
+All entries use the same field structure.
+
+---
+
+## Single Fields vs Repeatable Fields
+
+### Single Fields
+
+Used when content appears only once.
+
+Examples:
+
+* Hero Title
+* Banner Image
+* Page Description
+
+---
+
+### Repeatable Fields
+
+Used when content can have multiple entries.
+
+Examples:
+
+* FAQs
+* Team Members
+* Testimonials
+* Services
+* Gallery Images
+* Slider Items
+
+---
+
+## help_text
+
+**Purpose:** Provides instructions to CMS users.
+
+The help text appears directly below the input field.
+
+Examples:
+
+```text
+Recommended image size: 1920x1080px
+```
+
+```text
+Maximum 60 characters allowed.
+```
+
+```text
+Upload only JPG, PNG, or WEBP files.
+```
+
+Help text supports formatted HTML content and links.
+
+### Example
+
+```text
+SEO Title
+Maximum 60 characters allowed.
+```
+
+This helps guide users while entering content.
+
+---
+
+## Practical Example
+
+Consider a Team Section:
+
+### Schema Definition
+
+```text
+schema_group: Team Members
+
+Fields:
+- Name
+- Position
+- Photo
+- Description
+```
+
+### User Experience
+
+```text
+Add Team Member
+```
+
+User enters:
+
+```text
+John Doe
+Designer
+
+Jane Smith
+Developer
+
+Michael Brown
+Project Manager
+```
+
+The CMS automatically stores each entry as a separate schema instance.
+
+The frontend component then loops through these records and renders the final team section.
+
+---
+
+## Developer Responsibilities
+
+When creating dynamic fields, developers should:
+
+* Choose appropriate field types
+* Configure colspan values
+* Set validation rules
+* Configure table visibility
+* Define repeater structures
+* Add useful help text
+
+A well-designed field structure improves both content management and frontend consistency.
+
+---
+
+## Summary
+
+Dynamic Fields provide a schema-driven content system that allows developers to create flexible and reusable content structures without modifying database tables.
+
+Key features include:
+
+* Dynamic form generation
+* Layout control using colspan
+* Validation through is_required
+* Listing control through show_in_table
+* Repeater support using schema_group and schema_instance
+* User guidance through help_text
+
+This system forms the foundation of the CMS's component architecture.

@@ -1,0 +1,320 @@
+---
+title: Sections Manager
+---
+
+# Sections Manager
+
+The Sections Manager is the core system responsible for defining, organizing, and rendering website sections throughout the CMS.
+
+Every visible section on the frontend (such as Hero Banners, About Sections, Service Blocks, Galleries, FAQs, and Footers) originates from a registered component within the Sections Manager.
+
+The system follows a hybrid architecture where:
+
+- Component definitions are stored in the database
+- Frontend layouts are rendered through Blade templates
+- Users manage content through the CMS
+- Developers control structure and presentation
+
+---
+
+## How Sections Work
+
+A section consists of two parts:
+
+### 1. Database Definition
+
+The component is registered in the CMS database.
+
+This defines:
+
+- Component name
+- Available fields
+- Field types
+- Repeater settings
+- Display order
+- Configuration options
+
+These records are primarily stored in:
+
+- `component_masters`
+- `component_fields`
+
+---
+
+### 2. Blade Template
+
+A matching Blade template must exist inside:
+
+```text
+resources/views/components/frontend/
+````
+
+The Blade file is responsible for rendering the frontend layout using the data stored in the database.
+
+For example:
+
+```text
+component_masters.name = hero_section
+```
+
+Must have:
+
+```text
+resources/views/components/frontend/hero_section.blade.php
+```
+
+The system automatically connects both using the component name.
+
+---
+
+## Section Creation Workflow
+
+When creating a new section, developers first define the fields that users will manage.
+
+Examples:
+
+* Text fields
+* Textareas
+* Images
+* Numbers
+* Links
+* Select dropdowns
+* Repeater groups
+
+The section schema is stored in the database and becomes available inside the CMS.
+
+After that, a Blade component with the same name must be created to display the data on the frontend.
+
+### Section Creation Flow
+
+```text
+Create Component
+        ↓
+Add Fields
+        ↓
+Register in Database
+        ↓
+Create Matching Blade File
+        ↓
+Component Appears in CMS
+        ↓
+User Adds Component to Page
+        ↓
+User Enters Content
+        ↓
+Frontend Renders Output
+```
+
+---
+
+## Field Types
+
+The system supports multiple field types.
+
+Examples include:
+
+* Text
+* Textarea
+* Image Upload
+* Number
+* URL
+* Select
+* File Upload
+
+Each field is stored as a row inside the database.
+
+Common properties include:
+
+```text
+name
+type
+value
+group
+schema_group
+position
+```
+
+---
+
+## Repeatable Fields
+
+The CMS supports both simple fields and repeatable groups.
+
+### Single Fields
+
+Used for content that only appears once.
+
+Example:
+
+```text
+Heading
+Description
+Banner Image
+```
+
+---
+
+### Repeater Groups
+
+Used when users need to create multiple items.
+
+Examples:
+
+* Service Lists
+* FAQ Items
+* Testimonials
+* Gallery Images
+* Slider Items
+
+Users can append additional rows without developer involvement.
+
+### Example
+
+```text
+Service 1
+Service 2
+Service 3
+Service 4
+```
+
+All items use the same schema but store different values.
+
+---
+
+## Automatic Blade Matching
+
+The CMS automatically loads the correct Blade component based on the component name.
+
+Example:
+
+```php
+@component('components.frontend.' . $key, ['data' => $component])
+```
+
+Where:
+
+```text
+$key = component name
+```
+
+If the component name is:
+
+```text
+hero_section
+```
+
+The system automatically loads:
+
+```text
+components/frontend/hero_section.blade.php
+```
+
+No additional routing configuration is required.
+
+---
+
+## Component Positioning
+
+Sections are rendered according to their assigned positions.
+
+The following tables control ordering:
+
+* `component_masters`
+* `page_components`
+
+The `position` column determines rendering order.
+
+Example:
+
+```text
+Position 1 → Hero Banner
+Position 2 → About Section
+Position 3 → Services
+Position 4 → Gallery
+Position 5 → Footer
+```
+
+The frontend displays sections from top to bottom based on this order.
+
+---
+
+## Per-Page Component Management
+
+Users can manage components independently for each page.
+
+From the Page Editor users can:
+
+* Add components
+* Remove components
+* Change component order
+* Edit component content
+
+This allows the same component to be reused across multiple pages.
+
+---
+
+## Rendering Flow
+
+The rendering pipeline follows this process:
+
+```text
+Section Schema (Database)
+            ↓
+User Content (ComponentField Values)
+            ↓
+Page Controller Structures Data
+            ↓
+Blade Component Receives Data
+            ↓
+Frontend Output Generated
+```
+
+The controller transforms raw database rows into structured arrays before passing them to Blade templates.
+
+---
+
+## Developer Responsibilities
+
+Developers are responsible for:
+
+* Creating component schemas
+* Defining field structures
+* Creating frontend Blade templates
+* Handling frontend layout and styling
+* Managing reusable section architecture
+
+---
+
+## User Responsibilities
+
+Users are responsible for:
+
+* Adding sections to pages
+* Editing content
+* Uploading images
+* Managing repeatable items
+* Organizing page layouts
+
+No code changes are required for content updates.
+
+---
+
+## Summary
+
+The Sections Manager bridges the gap between database-driven content and frontend presentation.
+
+Developers create:
+
+* Component structures
+* Field schemas
+* Blade templates
+
+Users then:
+
+* Add components to pages
+* Manage content
+* Control page layouts
+
+This architecture allows new sections to be developed once and reused across the entire website.
+
+

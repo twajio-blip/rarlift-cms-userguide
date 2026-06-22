@@ -1,0 +1,254 @@
+---
+
+## title: Frontend Integration System
+
+# Frontend Integration System
+
+The RARLift frontend architecture is built on a **dynamic, asset-driven system** that integrates JavaScript utilities, animation libraries, font management, and interactive UI components into a unified rendering pipeline.
+
+This system ensures that all CMS-generated components behave consistently across pages while remaining fully dynamic and database-controlled.
+
+---
+
+## 1. JavaScript Asset Pipeline (`app.js`)
+
+The primary frontend script (`app.js`) initializes all global libraries and manages interactive behaviors across the CMS.
+
+It is responsible for:
+
+* Animation handling
+* UI plugin initialization
+* Scroll-based effects
+* Reusable interactive components
+* Layout stability fixes for dynamic content
+
+---
+
+### A. Global Library Initialization
+
+#### AOS (Animate On Scroll)
+
+AOS is globally initialized to control section animations:
+
+```javascript id="aos-init"
+AOS.init({
+    duration: 1000,
+    once: true,
+    offset: 0,
+    easing: 'ease-in-out',
+    startEvent: 'DOMContentLoaded',
+});
+```
+
+This ensures smooth entrance animations for all CMS-rendered sections.
+
+---
+
+### Layout Stability Fixes
+
+Since components are loaded dynamically from the database, layout shifts may occur during rendering.
+
+To handle this, the system uses event-based refresh logic:
+
+```javascript id="aos-refresh"
+window.addEventListener('load', () => AOS.refresh());
+
+document.addEventListener('alpine:initialized', () => {
+    AOS.refresh();
+    setTimeout(() => AOS.refresh(), 500);
+});
+```
+
+This guarantees animations remain consistent even when components load asynchronously.
+
+---
+
+### Preline UI & Alpine.js Integration
+
+* Preline UI components are initialized after DOM load
+* Alpine.js handles reactive frontend behaviors
+* Both systems work together for lightweight interactivity
+
+---
+
+### Swiper.js Configuration
+
+Swiper is used for all carousel-based components such as:
+
+* Hero sliders
+* Testimonials
+* Team sections
+* Product showcases
+
+Each slider is configured with responsive breakpoints:
+
+```text id="swiper-breakpoints"
+Mobile → 1 slide
+Tablet → 2 slides
+Desktop → 3+ slides
+```
+
+---
+
+## 2. Reusable Alpine Components
+
+The CMS includes custom Alpine.js utilities for enhanced interactivity.
+
+### Image Lightbox (Zoom & Pan)
+
+A reusable lightbox system allows users to zoom and drag images smoothly:
+
+```javascript id="lightbox-alpine"
+Alpine.data('lightboxZoom', () => ({
+    zoomed: false,
+    panX: 0,
+    panY: 0,
+
+    toggleZoom() {
+        this.zoomed = !this.zoomed;
+    },
+
+    startPan() {},
+    doPan() {}
+}));
+```
+
+This is used across gallery, portfolio, and media components.
+
+---
+
+## 3. Scroll-Based Animation System
+
+The CMS includes an IntersectionObserver utility that triggers animations when elements enter the viewport.
+
+### observeAndAnimate System
+
+```javascript id="observer"
+const observeAndAnimate = function (selector, toggleClasses) {
+    const observer = new IntersectionObserver((entries, observerInstance) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                $(entry.target)
+                    .addClass("in-view")
+                    .toggleClass(toggleClasses);
+
+                observerInstance.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+};
+```
+
+### Behavior
+
+* Detects elements with `data-observe`
+* Triggers animations on scroll
+* Applies directional effects (left, right, top)
+* Runs only once per element for performance optimization
+
+---
+
+## 4. Dynamic Font System
+
+Fonts in RARLift are fully database-driven, allowing administrators to control typography without code changes.
+
+---
+
+### A. Font Caching System
+
+Fonts are loaded using Laravel caching to improve performance:
+
+```php id="font-cache"
+'font_frontend' => Cache::rememberForever(
+    'font_frontend',
+    fn() => Font::where('is_frontend', 1)->first()
+),
+```
+
+This avoids repeated database queries on every page request.
+
+---
+
+### B. Dynamic Google Font Injection
+
+Fonts are injected directly into the frontend layout:
+
+```blade id="font-inject"
+@if ($font_frontend)
+    {!! $font_frontend->font_links !!}
+@endif
+```
+
+This allows live font switching from the CMS.
+
+---
+
+### C. Backend Font Application
+
+Backend typography is applied dynamically using inline styles:
+
+```html id="backend-font"
+<body class="font-custom"
+      style="font-family: {{ $font_backend?->font_family }};">
+```
+
+---
+
+### D. Unified Typography System
+
+Font definitions are mapped across:
+
+* Tailwind CSS utility classes
+* Google Fonts imports
+* Backend + frontend layouts
+
+This ensures consistent typography across the entire system.
+
+---
+
+## 5. Frontend Rendering Strategy
+
+The frontend system follows a **component-first rendering model**:
+
+* Database controls structure
+* Blade components control layout
+* JavaScript enhances interactivity
+
+This creates a fully dynamic rendering pipeline where content updates instantly reflect on the frontend.
+
+---
+
+## 6. System Behavior Summary
+
+The frontend system ensures:
+
+* Smooth animations (AOS)
+* Interactive UI components (Alpine + Preline)
+* Responsive sliders (Swiper.js)
+* Dynamic fonts (database-driven)
+* Stable rendering for CMS-generated content
+
+---
+
+## 7. Developer Responsibilities
+
+Developers are responsible for:
+
+* Maintaining `app.js` initialization logic
+* Configuring UI libraries
+* Ensuring performance optimization
+* Extending Alpine components
+* Managing animation behavior
+
+---
+
+## 8. Summary
+
+The RARLift frontend system is a **hybrid dynamic rendering engine** combining:
+
+* Laravel Blade rendering
+* JavaScript UI enhancement
+* Database-driven typography
+* Component-based UI structure
+
+This ensures a consistent, scalable, and interactive frontend experience across all CMS-generated pages.
