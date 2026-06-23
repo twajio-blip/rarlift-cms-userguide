@@ -11,7 +11,8 @@
         "pages": [
           "introduction",
           "getting-started/login",
-          "getting-started/dashboard-overview"
+          "getting-started/dashboard-overview",
+          "getting-started/user-profile"
         ]
       },
       {

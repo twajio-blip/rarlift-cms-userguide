@@ -1,0 +1,125 @@
+---
+title: User Profile Management
+---
+
+# User Profile Management
+
+The Profile Management module allows users to manage their account information, update profile images, change passwords, and securely logout from the CMS.
+
+---
+
+## 👤 Profile Access
+
+Users can access their profile from the top navigation bar.
+
+A profile icon is displayed beside the **Settings** icon in the dashboard header.
+
+When the user hovers over or clicks the profile icon, a dropdown menu appears with the following options:
+
+- Profile
+- Logout
+
+### Profile Menu Preview
+
+```text
+👤 Profile
+├── Profile
+└── Logout
+```
+
+![Profile Dropdown](/images/profile-dropdown.png)
+
+---
+
+## 🖼️ Profile Page
+
+When the user clicks **Profile**, they are redirected to the Profile Management page.
+
+### Personal Information
+
+Users can update:
+
+- Full Name
+- Email Address
+
+### Profile Image
+
+Users can upload or update their profile picture.
+
+Supported features:
+
+- Upload new image
+- Replace existing image
+- Preview uploaded image before saving
+- Supported formats: JPG, JPEG, PNG, WEBP
+
+### Password Management
+
+Users can securely change their password by entering:
+
+- Current Password
+- New Password
+- Confirm New Password
+
+---
+
+## 🖥️ Profile Page Interface
+
+> Profile page showing user information, profile image upload, and password settings.
+
+![Profile Page](/images/profile-page.png)
+
+---
+
+## 🔐 Available Actions
+
+Users can:
+
+- Update account information
+- Change password
+- Upload profile image
+- Save changes
+- Logout securely
+
+---
+
+## 🚪 Logout
+
+Selecting **Logout** immediately signs the user out of the CMS and redirects them to the login page.
+
+---
+
+# 🧑‍💻 Developer Panel
+
+## Profile Module Architecture
+
+The Profile Management module is integrated with the authentication system and user database.
+
+### Features
+
+- User profile update
+- Password change functionality
+- Profile image upload and storage
+- Session-based authentication
+- Secure logout handling
+
+### Backend Requirements
+
+- User Model integration
+- Password hashing
+- Image upload validation
+- Storage management
+- Form validation
+
+---
+
+## 🚀 Summary
+
+The Profile Management system enables users to:
+
+- Manage personal information
+- Upload profile images
+- Change passwords securely
+- Logout from the CMS
+
+This provides a complete account management experience within the dashboard.
